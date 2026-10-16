@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: mealflow-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: mealflow_user
+      POSTGRES_PASSWORD: mealflow_password
+      POSTGRES_DB: mealflow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - mealflow-pgdata:/var/lib/postgresql/data
+
+volumes:
+  mealflow-pgdata:
