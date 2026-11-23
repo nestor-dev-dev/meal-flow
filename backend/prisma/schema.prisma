@@ -1,0 +1,384 @@
+// cSpell:disable
+// ============================================================================
+// CONFIGURACIÓN DEL GENERADOR Y CONEXIÓN A POSTGRESQL (PRISMA 7)
+// ============================================================================
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+// ============================================================================
+// ENUMS NATIVOS DE POSTGRESQL
+// ============================================================================
+enum Sexo {
+    HOMBRE
+    MUJER
+    OTRO
+}
+
+enum NivelActividad {
+    SEDENTARIO
+    LIGERO
+    MODERADO
+    ACTIVO
+    MUY_ACTIVO
+}
+
+enum FrecuenciaCompra {
+    SEMANAL
+    QUINCENAL
+    MENSUAL
+}
+
+enum ObjetivoCalorico {
+    PERDER_PESO
+    MANTENER
+    GANAR_MASA
+}
+
+enum Dieta {
+    OMNIVORA
+    VEGETARIANA
+    VEGANA
+    KETO
+    ALTA_PROTEINA
+}
+
+enum UtensilioCocina {
+    SARTEN
+    OLLA
+    OLLA_EXPRES
+    HORNO
+    MICROONDAS
+    AIRFRYER
+    BATIDORA
+    ROBOT_COCINA
+    TOSTADORA
+}
+
+enum TipoComida {
+    DESAYUNO
+    COMIDA
+    CENA
+}
+
+enum Dificultad {
+    FACIL
+    MEDIA
+    DIFICIL
+}
+
+enum TipoPlato {
+    PLATO_PRINCIPAL
+    PLATO_LIGERO
+    POSTRE
+}
+
+// ============================================================================
+// 1. CATÁLOGO MAESTRO DE ALIMENTOS (Compatible 100% con los 5 archivos .sql)
+// ============================================================================
+
+// Archivo 1: food_categories.sql (10 filas) -> Sin índices extra
+model Categoria {
+    id       Int     @id @default(autoincrement())
+    name     String  @unique @db.VarChar(100)
+    examples String? @db.Text
+
+    subcategorias SubCategoria[]
+
+    @@map("food_categories")
+}
+
+// Archivo 2: food_subcategories.sql (35 filas) -> Sin índices extra
+model SubCategoria {
+    id         Int     @id @default(autoincrement())
+    categoryId Int     @map("category_id")
+    name       String  @db.VarChar(100)
+    examples   String? @db.Text
+
+    categoria              Categoria                           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    ingredientes           Ingrediente[]
+    ingredientesSecundaria IngredienteSubcategoriaSecundaria[]
+
+    @@map("food_subcategories")
+}
+
+// Archivo 3: seed_ingredientes.sql (957 filas de BEDCA) -> Sin índices extra
+model Ingrediente {
+    id              Int      @id
+    name            String   @unique @db.VarChar(200)
+    nutriscoreAprox String   @map("nutriscore_aprox") @db.Char(1)
+    energyKcal      Decimal? @map("energy_kcal") @db.Decimal(7, 2)
+    proteinG        Decimal? @map("protein_g") @db.Decimal(7, 4)
+    fatG            Decimal? @map("fat_g") @db.Decimal(7, 4)
+    carbsG          Decimal? @map("carbs_g") @db.Decimal(7, 4)
+    fiberG          Decimal? @map("fiber_g") @db.Decimal(7, 4)
+    saturatedFatG   Decimal? @map("saturated_fat_g") @db.Decimal(7, 4)
+    sugarG          Decimal? @map("sugar_g") @db.Decimal(7, 4)
+    sodiumMg        Decimal? @map("sodium_mg") @db.Decimal(9, 4)
+    vitaminCMg      Decimal? @map("vitamin_c_mg") @db.Decimal(8, 4)
+    calciumMg       Decimal? @map("calcium_mg") @db.Decimal(8, 4)
+    ironMg          Decimal? @map("iron_mg") @db.Decimal(7, 4)
+    potassiumMg     Decimal? @map("potassium_mg") @db.Decimal(8, 4)
+    subcategoryId   Int      @map("subcategory_id")
+
+    subcategoria             SubCategoria                        @relation(fields: [subcategoryId], references: [id], onDelete: Restrict)
+    subcategoriasSecundarias IngredienteSubcategoriaSecundaria[]
+    medicionesAlternativas   MedicionAlternativa[]
+    recetas                  RecetaIngrediente[]
+    usuariosNoPuedenTomar    NoPuedeTomar[]
+    algoritmoUsuarios        AlgoritmoIngrediente[]
+
+    @@map("ingredients")
+}
+
+// Archivo 4: ingrediente_subcategoria_secundaria.sql (500 filas) -> PK compuesta (subcategoría primero)
+model IngredienteSubcategoriaSecundaria {
+    ingredientId  Int @map("ingredient_id")
+    subcategoryId Int @map("subcategory_id")
+
+    ingrediente  Ingrediente  @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+    subcategoria SubCategoria @relation(fields: [subcategoryId], references: [id], onDelete: Restrict)
+
+    @@id([subcategoryId, ingredientId]) // 🟢 KEY compuesta óptima para filtrar alérgenos por subcategoría
+    @@map("ingrediente_subcategoria_secundaria")
+}
+
+// Archivo 5: medicion_alternativa.sql (790 filas) -> UNIQUE(ingredient_id, nombre) actúa como INDEX
+model MedicionAlternativa {
+    id           Int     @id @default(autoincrement())
+    ingredientId Int     @map("ingredient_id")
+    nombre       String  @db.VarChar(50)
+    gramos       Decimal @db.Decimal(8, 3)
+
+    ingrediente Ingrediente @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+    @@unique([ingredientId, nombre]) // 🔵 INDEX: Cubre búsquedas por ingredient_id en el desplegable
+    @@map("medicion_alternativa")
+}
+
+// ============================================================================
+// 2. ENTIDAD USUARIO Y RED SOCIAL
+// ============================================================================
+
+model Usuario {
+    id                Int               @id @default(autoincrement()) // 🟢 KEY
+    nombre            String            @db.VarChar(100)
+    usuario           String            @unique @db.VarChar(50) // 🔵 INDEX (UNIQUE)
+    correo            String            @unique @db.VarChar(150) // 🔵 INDEX (UNIQUE)
+    contrasenaHash    String?           @map("contrasena_hash")
+    googleId          String?           @unique @map("google_id") // 🔵 INDEX (UNIQUE)
+    esAdmin           Boolean           @default(false) @map("es_admin")
+    fotoPerfil        String?           @map("foto_perfil")
+    fotoApaisada      String?           @map("foto_apaisada")
+    peso              Decimal?          @db.Decimal(5, 2)
+    fechaNacimiento   DateTime?         @map("fecha_nacimiento") @db.Date
+    sexo              Sexo?
+    altura            Int? // En cm
+    nivelActividad    NivelActividad?   @map("nivel_actividad")
+    tiempoMaxCocina   Int?              @map("tiempo_max_cocina")
+    interesEnAprender Boolean           @default(false) @map("interes_en_aprender")
+    frecCompra        FrecuenciaCompra? @map("frec_compra")
+    objetivoCalorico  ObjetivoCalorico? @map("objetivo_calorico")
+    ritmoVarianzaPeso Decimal?          @map("ritmo_varianza_peso") @db.Decimal(4, 2)
+    dieta             Dieta[]           @default([])
+    utensiliosCocina  UtensilioCocina[] @default([]) @map("utensilios_cocina")
+    horarioSemanal    Json?             @map("horario_semanal") @db.JsonB
+    numSeguidores     Int               @default(0) @map("num_seguidores") // 🟠 TRIGGERED
+    numSeguidos       Int               @default(0) @map("num_seguidos") // 🟠 TRIGGERED
+
+    // Relaciones
+    seguidores       Sigue[]                @relation("UsuarioSeguido")
+    seguidos         Sigue[]                @relation("UsuarioSeguidor")
+    recetasCreadas   Receta[]               @relation("UsuarioCreaReceta")
+    resenas          Resena[]
+    recetasGuardadas LeGusta[]
+    algoritmoRecetas AlgoritmoReceta[]
+    algoritmoIngred  AlgoritmoIngrediente[]
+    noPuedeTomar     NoPuedeTomar[]
+    menus            Menu[]
+
+    @@map("usuario")
+}
+
+// Relación N:M Reflexiva: Usuario Sigue Usuario
+model Sigue {
+    seguidorId Int @map("seguidor_id")
+    seguidoId  Int @map("seguido_id")
+
+    seguidor Usuario @relation("UsuarioSeguidor", fields: [seguidorId], references: [id], onDelete: Cascade)
+    seguido  Usuario @relation("UsuarioSeguido", fields: [seguidoId], references: [id], onDelete: Cascade)
+
+    @@id([seguidorId, seguidoId]) // 🟢 KEY compuesta
+    @@index([seguidoId]) // 🔵 INDEX en la 2ª parte de la clave compuesta
+    @@map("sigue")
+}
+
+// ============================================================================
+// 3. ENTIDAD RECETA Y RELACIONES SOCIALES / ALGORÍTMICAS
+// ============================================================================
+
+model Receta {
+    id               Int               @id @default(autoincrement()) // 🟢 KEY
+    userId           Int?              @map("user_id") // FK Nullable (Crea 1:N)
+    puntuacionSalud  Int               @map("puntuacion_salud") // 🔵 INDEX + 🟠 TRIGGERED
+    calorias         Decimal           @db.Decimal(7, 2) // 🔵 INDEX + 🟠 TRIGGERED
+    foto             String?
+    nombre           String            @db.VarChar(150)
+    videoUrl         String?           @map("video_url")
+    pasos            Json              @default("[]") @db.JsonB
+    descripcion      String?           @db.Text
+    tiempos          Int[]             @default([]) // 🟠 TRIGGERED
+    tiemposDobles    Int[]             @default([]) @map("tiempos_dobles") // 🟠 TRIGGERED
+    tiempoMedio      Int               @map("tiempo_medio") // 🔵 INDEX + 🟠 TRIGGERED
+    tiempoDobleMedio Int               @map("tiempo_doble_medio") // 🔵 INDEX + 🟠 TRIGGERED
+    dificultad       Dificultad
+    raciones         Int
+    maxNevera        Int               @map("max_nevera")
+    esCongelable     Boolean           @default(false) @map("es_congelable")
+    tipoComida       TipoComida[]      @default([]) @map("tipo_comida")
+    utensiliosCocina UtensilioCocina[] @default([]) @map("utensilios_cocina")
+    proteinas        Decimal           @db.Decimal(7, 2) // 🟠 TRIGGERED
+    carbohidratos    Decimal           @db.Decimal(7, 2) // 🟠 TRIGGERED
+    grasas           Decimal           @db.Decimal(7, 2) // 🟠 TRIGGERED
+    notaMedia        Decimal?          @map("nota_media") @db.Decimal(3, 2) // 🔵 INDEX + 🟠 TRIGGERED (NULL = sin reseñas)
+    fechaBaja        DateTime?         @map("fecha_baja") @db.Timestamptz(3)
+    tipoPlato        TipoPlato         @map("tipo_plato") // 🔵 INDEX
+
+    // Relaciones
+    creador      Usuario?            @relation("UsuarioCreaReceta", fields: [userId], references: [id], onDelete: SetNull)
+    ingredientes RecetaIngrediente[]
+    resenas      Resena[]
+    guardadaPor  LeGusta[]
+    algoritmo    AlgoritmoReceta[]
+    casillasMenu CasillaMenu[]
+
+    // 🔵 ÍNDICES DE RECETA SEGÚN DIAGRAMA ER
+    @@index([userId])
+    @@index([puntuacionSalud])
+    @@index([calorias])
+    @@index([tiempoMedio])
+    @@index([tiempoDobleMedio])
+    @@index([notaMedia])
+    @@index([tipoPlato])
+    @@map("receta")
+}
+
+// Relación N:M: Receta Tiene Ingredientes (Cantidad en gramos)
+model RecetaIngrediente {
+    recetaId      Int     @map("receta_id")
+    ingredienteId Int     @map("ingrediente_id")
+    cantidad      Decimal @db.Decimal(8, 2) // En gramos
+
+    receta      Receta      @relation(fields: [recetaId], references: [id], onDelete: Cascade)
+    ingrediente Ingrediente @relation(fields: [ingredienteId], references: [id], onDelete: Restrict)
+
+    @@id([recetaId, ingredienteId]) // 🟢 KEY compuesta
+    @@map("receta_ingrediente")
+}
+
+// Relación N:M: Reseña (PK invertida empezando por recetaId como en el diagrama)
+model Resena {
+    recetaId    Int      @map("receta_id")
+    userId      Int      @map("user_id")
+    nota        Int      @db.SmallInt
+    descripcion String?  @db.Text
+    fecha       DateTime @default(now()) @db.Timestamptz(3)
+
+    receta  Receta  @relation(fields: [recetaId], references: [id], onDelete: Cascade)
+    usuario Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([recetaId, userId]) // 🟢 KEY compuesta (Receta va primero para indexar sus reseñas gratis)
+    @@map("resena")
+}
+
+// Relación N:M: Le Gusta (Guarda)
+model LeGusta {
+    userId   Int @map("user_id")
+    recetaId Int @map("receta_id")
+
+    usuario Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
+    receta  Receta  @relation(fields: [recetaId], references: [id], onDelete: Cascade)
+
+    @@id([userId, recetaId]) // 🟢 KEY compuesta
+    @@map("le_gusta")
+}
+
+// Relación N:M: Algoritmo (Usuario <-> Receta)
+model AlgoritmoReceta {
+    userId         Int     @map("user_id")
+    recetaId       Int     @map("receta_id")
+    puntuacion     Int     @default(60) @db.SmallInt // 🟠 TRIGGERED (0..100)
+    esVotadoTiempo Boolean @default(false) @map("es_votado_tiempo")
+
+    usuario Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
+    receta  Receta  @relation(fields: [recetaId], references: [id], onDelete: Cascade)
+
+    @@id([userId, recetaId]) // 🟢 KEY compuesta
+    @@map("algoritmo_receta")
+}
+
+// Relación N:M: Algoritmo (Usuario <-> Ingredientes)
+model AlgoritmoIngrediente {
+    userId        Int @map("user_id")
+    ingredienteId Int @map("ingrediente_id")
+    puntuacion    Int @default(60) @db.SmallInt // 🟠 TRIGGERED (5..100)
+
+    usuario     Usuario     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    ingrediente Ingrediente @relation(fields: [ingredienteId], references: [id], onDelete: Restrict)
+
+    @@id([userId, ingredienteId]) // 🟢 KEY compuesta
+    @@map("algoritmo_ingrediente")
+}
+
+// Relación N:M: No puede tomar (Usuario <-> Ingredientes)
+model NoPuedeTomar {
+    userId        Int @map("user_id")
+    ingredienteId Int @map("ingrediente_id")
+
+    usuario     Usuario     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    ingrediente Ingrediente @relation(fields: [ingredienteId], references: [id], onDelete: Restrict)
+
+    @@id([userId, ingredienteId]) // 🟢 KEY compuesta
+    @@map("no_puede_tomar")
+}
+
+// ============================================================================
+// 4. PLANIFICACIÓN: MENÚ Y CASILLA MENÚ
+// ============================================================================
+
+model Menu {
+    id          Int      @id @default(autoincrement()) // 🟢 KEY
+    userId      Int      @map("user_id")
+    fechaIni    DateTime @map("fecha_ini") @db.Date
+    fechaFin    DateTime @map("fecha_fin") @db.Date
+    listaCompra Json?    @map("lista_compra") @db.JsonB
+
+    usuario  Usuario       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    casillas CasillaMenu[]
+
+    @@unique([userId, fechaIni]) // 🔵 INDEX compuesto (user_id + Fecha ini) + Evita 2 menús el mismo día
+    @@map("menu")
+}
+
+// Entidad Débil: Casilla Menú
+model CasillaMenu {
+    menuId       Int        @map("menu_id")
+    fecha        DateTime   @db.Date
+    tipoComida   TipoComida @map("tipo_comida")
+    tipoPlato    TipoPlato  @map("tipo_plato")
+    numPers      Int        @map("num_pers")
+    puedeCocinar Boolean    @map("puede_cocinar")
+    esTupper     Boolean    @default(false) @map("es_tupper")
+    recetaId     Int?       @map("receta_id")
+
+    menu   Menu    @relation(fields: [menuId], references: [id], onDelete: Cascade)
+    receta Receta? @relation(fields: [recetaId], references: [id], onDelete: Restrict)
+
+    @@id([menuId, fecha, tipoComida, tipoPlato]) // 🟢 KEY compuesta de 4 elementos
+    @@map("casilla_menu")
+}
