@@ -33,7 +33,7 @@
     pointer-events: auto;
     touch-action: none;
     cursor: grab;
-    filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 10px 26px var(--hud-shadow));
 }
 
 .meniscus-dock:active {
@@ -58,6 +58,18 @@
     height: 100%;
     overflow: visible;
     pointer-events: none;
+}
+
+.meniscus-path-fill {
+    fill: var(--hud-surface);
+    transition: fill 0.25s ease;
+}
+
+.meniscus-path-stroke {
+    fill: none;
+    stroke: var(--hud-border);
+    stroke-width: 1.2;
+    transition: stroke 0.25s ease;
 }
 
 /* Círculo plano (52px) + resplandor exterior suave como en el vídeo */
@@ -129,11 +141,11 @@
     background: transparent;
     border: none;
     padding: 0;
-    color: rgba(243, 244, 246, 0.48);
     cursor: pointer;
     outline: none;
     -webkit-tap-highlight-color: transparent;
     transition: color 0.22s ease;
+    color: var(--hud-icon-idle);
 }
 
 .is-mobile .meniscus-item {
@@ -153,7 +165,7 @@
 }
 
 .meniscus-item:hover {
-    color: rgba(243, 244, 246, 0.88);
+    color: var(--hud-icon-hover);
 }
 
 .meniscus-item:focus-visible .meniscus-icon-wrap {
@@ -235,16 +247,16 @@
     left: calc(100% + 40px);
     padding: 5px 10px;
     border-radius: 8px;
-    background: #14151b;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    color: #f3f4f6;
+    background: var(--hud-tooltip-bg);
+    border: 1px solid var(--hud-border);
+    color: var(--hud-tooltip-text);
     font-size: 0.76rem;
     font-weight: 600;
     white-space: nowrap;
     opacity: 0;
     transform: translateX(-6px);
     pointer-events: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 8px 20px var(--hud-shadow);
     transition:
         opacity 0.18s ease,
         transform 0.18s ease;
@@ -253,4 +265,8 @@
 .is-desktop .meniscus-item:hover .meniscus-label {
     opacity: 1;
     transform: translateX(0);
+}
+
+[data-theme='light'] .is-mobile .meniscus-item.is-active.is-dark-icon .meniscus-label {
+    color: var(--text-main);
 }

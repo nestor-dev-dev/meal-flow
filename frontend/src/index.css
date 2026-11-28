@@ -1,12 +1,47 @@
-:root {
+:root,
+[data-theme='dark'] {
+  /* Superficies y textos de la app */
   --bg-dark: #121212;
-  --bg-card: #1e1e1e;
-  --bg-elevated: #2d2d2d;
+  --bg-card: #191a21;
+  --bg-elevated: #23252f;
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.18);
   --text-main: #f3f4f6;
   --text-muted: #9ca3af;
+
+  /* Tokens universales para TODOS los HUDs */
+  --hud-surface: #14151b;
+  --hud-border: rgba(255, 255, 255, 0.16);
+  --hud-icon-idle: rgba(243, 244, 246, 0.48);
+  --hud-icon-hover: rgba(243, 244, 246, 0.9);
+  --hud-shadow: rgba(0, 0, 0, 0.55);
+  --hud-tooltip-bg: #14151b;
+  --hud-tooltip-text: #f3f4f6;
+
+  /* Acentos base y layout */
   --accent-green: #10b981;
   --accent-red: #ef4444;
-  --nav-size: 80px; /* Alto en móvil, ancho en PC */
+  --nav-size: 80px;
+}
+
+[data-theme='light'] {
+  /* Superficies y textos de la app */
+  --bg-dark: #f4f5f8;
+  --bg-card: #ffffff;
+  --bg-elevated: #eceef3;
+  --border-subtle: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.18);
+  --text-main: #111827;
+  --text-muted: #6b7280;
+
+  /* Tokens universales para TODOS los HUDs en modo claro */
+  --hud-surface: #ffffff;
+  --hud-border: rgba(15, 23, 42, 0.12);
+  --hud-icon-idle: rgba(17, 24, 39, 0.46);
+  --hud-icon-hover: rgba(17, 24, 39, 0.92);
+  --hud-shadow: rgba(15, 23, 42, 0.14);
+  --hud-tooltip-bg: #ffffff;
+  --hud-tooltip-text: #111827;
 }
 
 body {
@@ -15,7 +50,8 @@ body {
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: system-ui, -apple-system, sans-serif;
-  overflow: hidden; /* Evita el scroll en toda la página, lo haremos por zonas */
+  overflow: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 * {

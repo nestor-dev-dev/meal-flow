@@ -5,31 +5,27 @@ import {
     useRef,
     useState,
     type PointerEvent as ReactPointerEvent,
-} from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import type { HudProps } from '../../hudRegistry';
-import { getOrderedNavItems } from '../../navItems';
-import {
-    buildMeniscusPath,
-    hexToRgb,
-    sampleAccentColor,
-} from './meniscusMath';
-import './MeniscusHud.css';
+} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import type { HudProps } from "../../hudRegistry";
+import { getOrderedNavItems } from "../../navItems";
+import { buildMeniscusPath, hexToRgb, sampleAccentColor } from "./meniscusMath";
+import "./MeniscusHud.css";
 
-const DESKTOP_QUERY = '(min-width: 768px)';
+const DESKTOP_QUERY = "(min-width: 768px)";
 const CORNER_RADIUS = 20;
-const ORB_RADIUS = 26;      // Diámetro del círculo = 52px
-const NOTCH_GAP = 5;        // Hueco uniforme entre círculo y borde del dock
+const ORB_RADIUS = 26; // Diámetro del círculo = 52px
+const NOTCH_GAP = 5; // Hueco uniforme entre círculo y borde del dock
 const NOTCH_RADIUS = ORB_RADIUS + NOTCH_GAP; // 31px exactos
-const ORB_OUTSET = 4;       // El centro del círculo sobresale 4px del borde
-const FILLET_RADIUS = 10;   // Curva limpia de entrada/salida
+const ORB_OUTSET = 4; // El centro del círculo sobresale 4px del borde
+const FILLET_RADIUS = 10; // Curva limpia de entrada/salida
 
 export default function MeniscusHud({ items }: HudProps) {
     const location = useLocation();
     const navigate = useNavigate();
 
     const [isDesktop, setIsDesktop] = useState<boolean>(() =>
-        typeof window !== 'undefined'
+        typeof window !== "undefined"
             ? window.matchMedia(DESKTOP_QUERY).matches
             : false,
     );
@@ -77,8 +73,8 @@ export default function MeniscusHud({ items }: HudProps) {
     useEffect(() => {
         const mql = window.matchMedia(DESKTOP_QUERY);
         const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-        mql.addEventListener('change', onChange);
-        return () => mql.removeEventListener('change', onChange);
+        mql.addEventListener("change", onChange);
+        return () => mql.removeEventListener("change", onChange);
     }, []);
 
     const measureLayout = useCallback(
@@ -108,7 +104,7 @@ export default function MeniscusHud({ items }: HudProps) {
 
             if (svgRef.current) {
                 svgRef.current.setAttribute(
-                    'viewBox',
+                    "viewBox",
                     `0 0 ${dockRect.width} ${dockRect.height}`,
                 );
             }
@@ -166,10 +162,7 @@ export default function MeniscusHud({ items }: HudProps) {
                     p.vel = (p.vel + force) * damping;
                     p.pos += p.vel;
 
-                    if (
-                        Math.abs(p.target - p.pos) < 0.05 &&
-                        Math.abs(p.vel) < 0.05
-                    ) {
+                    if (Math.abs(p.target - p.pos) < 0.05 && Math.abs(p.vel) < 0.05) {
                         p.pos = p.target;
                         p.vel = 0;
                     }
@@ -186,8 +179,8 @@ export default function MeniscusHud({ items }: HudProps) {
                     isDesktop,
                 });
 
-                if (pathFillRef.current) pathFillRef.current.setAttribute('d', d);
-                if (pathStrokeRef.current) pathStrokeRef.current.setAttribute('d', d);
+                if (pathFillRef.current) pathFillRef.current.setAttribute("d", d);
+                if (pathStrokeRef.current) pathStrokeRef.current.setAttribute("d", d);
 
                 if (orbRef.current) {
                     if (!isDesktop) {
@@ -202,7 +195,7 @@ export default function MeniscusHud({ items }: HudProps) {
                 const rgb = sampleAccentColor(p.pos, p.centers, itemColors);
                 if (dockRef.current) {
                     dockRef.current.style.setProperty(
-                        '--acc-rgb',
+                        "--acc-rgb",
                         `${rgb.r}, ${rgb.g}, ${rgb.b}`,
                     );
                 }
@@ -238,7 +231,7 @@ export default function MeniscusHud({ items }: HudProps) {
     };
 
     const handlePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        if (e.button !== 0 && e.pointerType === "mouse") return;
         const p = physicsRef.current;
         p.pointerDown = true;
         p.isDragging = false;
@@ -303,30 +296,20 @@ export default function MeniscusHud({ items }: HudProps) {
 
     return (
         <nav
-            className={`meniscus-shell ${isDesktop ? 'is-desktop' : 'is-mobile'}`}
+            className={`meniscus-shell ${isDesktop ? "is-desktop" : "is-mobile"}`}
             aria-label="Navegación principal"
         >
             <div
                 ref={dockRef}
-                className={`meniscus-dock ${activeItem?.isPrimary ? 'is-primary-active' : ''}`}
+                className={`meniscus-dock ${activeItem?.isPrimary ? "is-primary-active" : ""}`}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={finishDrag}
                 onPointerCancel={finishDrag}
             >
                 <svg ref={svgRef} className="meniscus-svg" aria-hidden="true">
-                    <path
-                        ref={pathFillRef}
-                        className="meniscus-path-fill"
-                        fill="#14151b"
-                    />
-                    <path
-                        ref={pathStrokeRef}
-                        className="meniscus-path-stroke"
-                        fill="none"
-                        stroke="rgba(255, 255, 255, 0.16)"
-                        strokeWidth="1.2"
-                    />
+                    <path ref={pathFillRef} className="meniscus-path-fill" />
+                    <path ref={pathStrokeRef} className="meniscus-path-stroke" />
                 </svg>
 
                 <div ref={orbRef} className="meniscus-orb" aria-hidden="true">
@@ -347,16 +330,16 @@ export default function MeniscusHud({ items }: HudProps) {
                                 }}
                                 type="button"
                                 className={[
-                                    'meniscus-item',
-                                    isActive ? 'is-active' : '',
-                                    item.isPrimary ? 'is-primary' : '',
-                                    item.darkIconOnOrb ? 'is-dark-icon' : '',
-                                    item.pinBottomDesktop ? 'is-bottom' : '',
+                                    "meniscus-item",
+                                    isActive ? "is-active" : "",
+                                    item.isPrimary ? "is-primary" : "",
+                                    item.darkIconOnOrb ? "is-dark-icon" : "",
+                                    item.pinBottomDesktop ? "is-bottom" : "",
                                 ]
                                     .filter(Boolean)
-                                    .join(' ')}
+                                    .join(" ")}
                                 onClick={() => handleItemClick(idx, item.to)}
-                                aria-current={isActive ? 'page' : undefined}
+                                aria-current={isActive ? "page" : undefined}
                                 aria-label={item.label}
                                 title={isDesktop ? item.label : undefined}
                             >
