@@ -20,7 +20,7 @@ export interface NavItemConfig {
     isPrimary?: boolean;
     /** Usa icono oscuro dentro de la esfera si el color de acento es muy luminoso */
     darkIconOnOrb?: boolean;
-    /** En PC, empuja este botón al final inferior de la barra */
+    /** En PC, empuja este botón (y los que vayan detrás) al final inferior de la barra */
     pinBottomDesktop?: boolean;
 }
 
@@ -30,9 +30,9 @@ export const NAV_ITEMS: NavItemConfig[] = [
         to: '/menu',
         label: 'Menú',
         icon: CalendarDays,
-        accent: '#c4f22c',
+        accent: '#c4f22c', // Tu lima actualizado
         mobileOrder: 1,
-        desktopOrder: 2,
+        desktopOrder: 1,
         darkIconOnOrb: true,
     },
     {
@@ -42,17 +42,7 @@ export const NAV_ITEMS: NavItemConfig[] = [
         icon: Flame,
         accent: '#f97316',
         mobileOrder: 2,
-        desktopOrder: 3,
-    },
-    {
-        id: 'crear',
-        to: '/crear',
-        label: 'Crear',
-        icon: Plus,
-        accent: '#3b82f6',
-        mobileOrder: 3,
-        desktopOrder: 1,
-        isPrimary: true,
+        desktopOrder: 2,
     },
     {
         id: 'compra',
@@ -61,7 +51,18 @@ export const NAV_ITEMS: NavItemConfig[] = [
         icon: ShoppingCart,
         accent: '#06b6d4',
         mobileOrder: 4,
-        desktopOrder: 4,
+        desktopOrder: 3,
+    },
+    {
+        id: 'crear',
+        to: '/crear',
+        label: 'Crear',
+        icon: Plus,
+        accent: '#3b82f6',
+        mobileOrder: 3, // Centro exacto en móvil
+        desktopOrder: 4, // Abajo en PC, justo encima de Cuenta
+        isPrimary: true,
+        pinBottomDesktop: true,
     },
     {
         id: 'cuenta',
@@ -71,7 +72,6 @@ export const NAV_ITEMS: NavItemConfig[] = [
         accent: '#a855f7',
         mobileOrder: 5,
         desktopOrder: 5,
-        pinBottomDesktop: true,
     },
 ];
 

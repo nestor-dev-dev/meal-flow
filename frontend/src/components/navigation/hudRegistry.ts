@@ -25,8 +25,8 @@ export const HUD_REGISTRY: Record<HudId, HudDefinition> = {
         id: 'meniscus',
         name: 'Meniscus',
         description: 'Dock paramétrico oscuro con muesca líquida y esfera luminosa arrastrable.',
-        navSizeMobile: 96,
-        navSizeDesktop: 96,
+        navSizeMobile: 124,
+        navSizeDesktop: 140,
         Component: MeniscusHud,
     },
 };
