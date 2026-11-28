@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import Navigation from './components/Navigation';
+import Navigation from './components/navigation/Navigation';
 import Menu from './pages/Menu';
 import Feed from './pages/Feed';
 import Crear from './pages/Crear';

@@ -1,0 +1,256 @@
+/* ==========================================================================
+   MENISCUS HUD — Caja flotante (Móvil abajo / PC izquierda) + círculo plano
+   ========================================================================== */
+
+.meniscus-shell {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Móvil: caja flotante que ocupa todo el ancho con margen limpio */
+.meniscus-shell.is-mobile {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+}
+
+/* PC: caja flotante a la izquierda de arriba a abajo con margen limpio */
+.meniscus-shell.is-desktop {
+    top: 14px;
+    left: 14px;
+    bottom: 14px;
+    display: flex;
+}
+
+/* Contenedor principal del dock */
+.meniscus-dock {
+    --acc-rgb: 185, 242, 74;
+    position: relative;
+    pointer-events: auto;
+    touch-action: none;
+    cursor: grab;
+    filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55));
+}
+
+.meniscus-dock:active {
+    cursor: grabbing;
+}
+
+.is-mobile .meniscus-dock {
+    width: 100%;
+    height: 74px;
+}
+
+.is-desktop .meniscus-dock {
+    width: 76px;
+    height: 100%;
+}
+
+/* Capa SVG paramétrica */
+.meniscus-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Círculo plano (52px) + resplandor exterior suave como en el vídeo */
+.meniscus-orb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 52px;
+    height: 52px;
+    pointer-events: none;
+    will-change: transform;
+    z-index: 2;
+}
+
+.meniscus-orb-glow {
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+            rgba(var(--acc-rgb), 0.42) 0%,
+            rgba(var(--acc-rgb), 0.14) 45%,
+            rgba(var(--acc-rgb), 0) 72%);
+    filter: blur(5px);
+    transition: transform 0.25s ease;
+}
+
+.meniscus-dock.is-primary-active .meniscus-orb-glow {
+    transform: scale(1.22);
+}
+
+/* Color 100 % plano: cero degradados 3D ni brillos estilo Vista */
+.meniscus-orb-core {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: rgb(var(--acc-rgb));
+    box-shadow: 0 0 20px rgba(var(--acc-rgb), 0.4);
+}
+
+/* Contenedor de botones */
+.meniscus-items {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.is-mobile .meniscus-items {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0 18px;
+}
+
+.is-desktop .meniscus-items {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 24px 0;
+    gap: 8px;
+}
+
+/* Cada pestaña */
+.meniscus-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: rgba(243, 244, 246, 0.48);
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.22s ease;
+}
+
+.is-mobile .meniscus-item {
+    flex: 1;
+    /* Misma distancia entre los 5 botones en móvil */
+}
+
+.is-desktop .meniscus-item {
+    flex: 0 0 68px;
+    /* 4 botones agrupados arriba en PC */
+    width: 100%;
+}
+
+.is-desktop .meniscus-item.is-bottom {
+    margin-top: auto;
+    /* Cuenta abajo del todo en PC */
+}
+
+.meniscus-item:hover {
+    color: rgba(243, 244, 246, 0.88);
+}
+
+.meniscus-item:focus-visible .meniscus-icon-wrap {
+    box-shadow: 0 0 0 2px rgba(var(--acc-rgb), 0.85);
+    border-radius: 50%;
+}
+
+/* Contenedor del icono */
+.meniscus-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    transition:
+        transform 0.34s cubic-bezier(0.22, 1.32, 0.36, 1),
+        color 0.22s ease,
+        background-color 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+    will-change: transform;
+}
+
+/* Botón especial '+' (Crear) con glow plano permanente en reposo */
+.meniscus-item.is-primary:not(.is-active) .meniscus-icon-wrap {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.16);
+    border: 1px solid rgba(96, 165, 250, 0.55);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.55);
+}
+
+.meniscus-item.is-primary:not(.is-active):hover .meniscus-icon-wrap {
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.28);
+    box-shadow: 0 0 22px rgba(59, 130, 246, 0.8);
+}
+
+/* Móvil: altura 74px (centro 37px) -> círculo en y = -4px => desplazamiento exacto -41px */
+.is-mobile .meniscus-item.is-active .meniscus-icon-wrap {
+    color: #ffffff;
+    transform: translateY(-41px);
+}
+
+.is-mobile .meniscus-label {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    transform: translateY(4px);
+    color: rgb(var(--acc-rgb));
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+    pointer-events: none;
+}
+
+.is-mobile .meniscus-item.is-active .meniscus-label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* PC izquierda: ancho 76px (centro 38px) -> círculo en x = 80px => desplazamiento exacto +42px */
+.is-desktop .meniscus-item.is-active .meniscus-icon-wrap {
+    color: #ffffff;
+    transform: translateX(42px);
+}
+
+/* Icono oscuro en acentos muy luminosos (amarillo lima de Menú) */
+.meniscus-item.is-active.is-dark-icon .meniscus-icon-wrap {
+    color: #14151b;
+}
+
+/* Tooltip en PC hacia la derecha de la barra */
+.is-desktop .meniscus-label {
+    position: absolute;
+    left: calc(100% + 40px);
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: #14151b;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #f3f4f6;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-6px);
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease;
+}
+
+.is-desktop .meniscus-item:hover .meniscus-label {
+    opacity: 1;
+    transform: translateX(0);
+}
