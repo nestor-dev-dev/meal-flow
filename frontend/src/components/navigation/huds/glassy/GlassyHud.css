@@ -3,384 +3,387 @@
    ========================================================================== */
 
 .glassy-shell {
-    position: fixed;
-    z-index: 1000;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Móvil: cápsula flotante horizontal inferior */
 .glassy-shell.is-mobile {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    display: flex;
-    justify-content: center;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
 }
 
 /* PC: cápsula flotante vertical izquierda de arriba a abajo */
 .glassy-shell.is-desktop {
-    top: 14px;
-    left: 14px;
-    bottom: 14px;
-    display: flex;
+  top: 14px;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
 }
 
 /* Tokens propios del cristal (respetan data-theme) */
 .glassy-dock {
-    --glass-bg: linear-gradient(180deg,
-            rgba(38, 44, 60, 0.72) 0%,
-            rgba(20, 23, 33, 0.78) 100%);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.25),
-        inset 0 -1px 1px rgba(0, 0, 0, 0.28);
-    --glass-pill-bg: #ffffff;
-    --glass-pill-text: #11131a;
-    --glass-hover-bg: rgba(255, 255, 255, 0.08);
-    --glass-divider: rgba(255, 255, 255, 0.12);
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(38, 44, 60, 0.72) 0%,
+    rgba(20, 23, 33, 0.78) 100%
+  );
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.28);
+  --glass-pill-bg: #ffffff;
+  --glass-pill-text: #11131a;
+  --glass-hover-bg: rgba(255, 255, 255, 0.08);
+  --glass-divider: rgba(255, 255, 255, 0.12);
 
-    position: relative;
-    pointer-events: auto;
-    display: flex;
-    background: var(--glass-bg);
-    backdrop-filter: blur(24px) saturate(165%);
-    -webkit-backdrop-filter: blur(24px) saturate(165%);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-        var(--glass-highlight),
-        0 16px 38px var(--hud-shadow);
-    transition:
-        width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-        border-radius 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-        background 0.25s ease,
-        border-color 0.25s ease;
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(165%);
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    var(--glass-highlight),
+    0 16px 38px var(--hud-shadow);
+  transition:
+    width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease,
+    border-color 0.25s ease;
 }
 
 /* Adaptación automática al tema Claro */
 [data-theme='light'] .glassy-dock {
-    --glass-bg: linear-gradient(180deg,
-            rgba(255, 255, 255, 0.82) 0%,
-            rgba(241, 244, 250, 0.78) 100%);
-    --glass-border: rgba(15, 23, 42, 0.12);
-    --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.9),
-        inset 0 -1px 1px rgba(15, 23, 42, 0.05);
-    --glass-pill-bg: #14151b;
-    --glass-pill-text: #ffffff;
-    --glass-hover-bg: rgba(15, 23, 42, 0.06);
-    --glass-divider: rgba(15, 23, 42, 0.1);
+  --glass-bg: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.82) 0%,
+    rgba(241, 244, 250, 0.78) 100%
+  );
+  --glass-border: rgba(15, 23, 42, 0.12);
+  --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px rgba(15, 23, 42, 0.05);
+  --glass-pill-bg: #14151b;
+  --glass-pill-text: #ffffff;
+  --glass-hover-bg: rgba(15, 23, 42, 0.06);
+  --glass-divider: rgba(15, 23, 42, 0.1);
 }
 
 /* Dimensiones en Móvil */
 .is-mobile .glassy-dock {
-    width: 100%;
-    max-width: 460px;
-    height: 68px;
-    border-radius: 999px;
-    flex-direction: row;
-    padding: 7px;
+  width: 100%;
+  max-width: 460px;
+  height: 68px;
+  border-radius: 999px;
+  flex-direction: row;
+  padding: 7px;
 }
 
 /* Dimensiones en PC (colapsado y desplegado) */
 .is-desktop .glassy-dock {
-    width: 68px;
-    height: 100%;
-    border-radius: 34px;
-    flex-direction: column;
-    padding: 12px 10px;
+  width: 68px;
+  height: 100%;
+  border-radius: 34px;
+  flex-direction: column;
+  padding: 12px 10px;
 }
 
 .is-desktop.is-expanded .glassy-dock {
-    width: 236px;
-    border-radius: 26px;
-    padding: 14px 12px;
+  width: 236px;
+  border-radius: 26px;
+  padding: 14px 12px;
 }
 
 /* Cabecera en PC */
 .glassy-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  gap: 10px;
 }
 
 .is-expanded .glassy-header {
-    justify-content: space-between;
-    padding: 0 2px;
+  justify-content: space-between;
+  padding: 0 2px;
 }
 
 .glassy-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-    animation: glassyFadeIn 0.24s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  animation: glassyFadeIn 0.24s ease;
 }
 
 .glassy-brand-mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 11px;
-    background: var(--glass-pill-bg);
-    color: var(--glass-pill-text);
-    flex-shrink: 0;
-    box-shadow: 0 4px 12px var(--hud-shadow);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--glass-pill-bg);
+  color: var(--glass-pill-text);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px var(--hud-shadow);
 }
 
 .glassy-brand-text {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .glassy-brand-name {
-    font-size: 0.94rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-main);
-    line-height: 1.15;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  line-height: 1.15;
 }
 
 .glassy-brand-sub {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    white-space: nowrap;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .glassy-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-hover-bg);
-    color: var(--text-main);
-    cursor: pointer;
-    flex-shrink: 0;
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-hover-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .glassy-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.16);
-    transform: scale(1.04);
+  background: rgba(255, 255, 255, 0.16);
+  transform: scale(1.04);
 }
 
 [data-theme='light'] .glassy-toggle-btn:hover {
-    background: rgba(15, 23, 42, 0.1);
+  background: rgba(15, 23, 42, 0.1);
 }
 
 .glassy-divider {
-    height: 1px;
-    margin: 12px 6px;
-    background: var(--glass-divider);
-    flex-shrink: 0;
+  height: 1px;
+  margin: 12px 6px;
+  background: var(--glass-divider);
+  flex-shrink: 0;
 }
 
 /* Contenedor de botones */
 .glassy-items {
-    position: relative;
-    display: flex;
-    flex: 1;
+  position: relative;
+  display: flex;
+  flex: 1;
 }
 
 .is-mobile .glassy-items {
-    flex-direction: row;
-    align-items: stretch;
-    gap: 4px;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 4px;
 }
 
 .is-desktop .glassy-items {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
 }
 
-/* Píldora activa deslizante (como en el vídeo) */
+/* Píldora activa deslizante */
 .glassy-active-pill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    border-radius: 999px;
-    background-color: var(--glass-pill-bg);
-    box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.24),
-        0 0 18px color-mix(in srgb, var(--active-accent) 42%, transparent);
-    pointer-events: none;
-    will-change: transform, width, height;
-    transition:
-        transform 0.36s cubic-bezier(0.22, 1.18, 0.36, 1),
-        width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        background-color 0.25s ease,
-        box-shadow 0.25s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 999px;
+  background-color: var(--glass-pill-bg);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.24),
+    0 0 18px color-mix(in srgb, var(--active-accent) 42%, transparent);
+  pointer-events: none;
+  will-change: transform, width, height;
+  transition:
+    transform 0.36s cubic-bezier(0.22, 1.18, 0.36, 1),
+    width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .is-desktop.is-expanded .glassy-active-pill {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 
 /* Botones de navegación */
 .glassy-item {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: var(--hud-icon-idle);
-    cursor: pointer;
-    outline: none;
-    border-radius: 999px;
-    -webkit-tap-highlight-color: transparent;
-    transition:
-        color 0.22s ease,
-        background-color 0.2s ease;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--hud-icon-idle);
+  cursor: pointer;
+  outline: none;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 0.22s ease,
+    background-color 0.2s ease;
 }
 
 .is-mobile .glassy-item {
-    flex: 1;
-    flex-direction: column;
-    gap: 2px;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .is-desktop .glassy-item {
-    width: 100%;
-    height: 46px;
+  width: 100%;
+  height: 46px;
 }
 
 .is-desktop.is-expanded .glassy-item {
-    justify-content: flex-start;
-    padding: 0 13px;
-    gap: 12px;
-    border-radius: 15px;
+  justify-content: flex-start;
+  padding: 0 13px;
+  gap: 12px;
+  border-radius: 15px;
 }
 
 .is-desktop .glassy-item.is-bottom {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .glassy-item:not(.is-active):hover {
-    color: var(--hud-icon-hover);
-    background-color: var(--glass-hover-bg);
+  color: var(--hud-icon-hover);
+  background-color: var(--glass-hover-bg);
 }
 
 .glassy-item.is-active {
-    color: var(--glass-pill-text);
+  color: var(--glass-pill-text);
 }
 
 /* Icono */
 .glassy-icon-wrap {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    transition:
-        transform 0.22s ease,
-        box-shadow 0.22s ease,
-        background-color 0.22s ease,
-        color 0.22s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease,
+    color 0.22s ease;
 }
 
 /* Resplandor especial para '+' (Crear) en reposo */
 .glassy-item.is-primary:not(.is-active) .glassy-icon-wrap {
-    color: #60a5fa;
-    background: rgba(59, 130, 246, 0.16);
-    box-shadow: 0 0 14px rgba(59, 130, 246, 0.45);
+  color: var(--item-accent);
+  background: color-mix(in srgb, var(--item-accent) 16%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--item-accent) 45%, transparent);
 }
 
 .glassy-item.is-primary:not(.is-active):hover .glassy-icon-wrap {
-    color: #93c5fd;
-    background: rgba(59, 130, 246, 0.26);
-    box-shadow: 0 0 18px rgba(59, 130, 246, 0.7);
+  color: var(--item-accent);
+  background: color-mix(in srgb, var(--item-accent) 26%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--item-accent) 70%, transparent);
 }
 
 /* Etiquetas en Móvil */
 .is-mobile .glassy-label {
-    font-size: 0.65rem;
-    font-weight: 600;
-    line-height: 1;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition:
-        max-height 0.22s ease,
-        opacity 0.22s ease;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.22s ease,
+    opacity 0.22s ease;
 }
 
 .is-mobile .glassy-item.is-active .glassy-label {
-    max-height: 14px;
-    opacity: 1;
+  max-height: 14px;
+  opacity: 1;
 }
 
 /* Etiquetas en PC colapsado (tooltip flotante a la derecha) */
 .is-desktop:not(.is-expanded) .glassy-label {
-    position: absolute;
-    left: calc(100% + 18px);
-    padding: 5px 10px;
-    border-radius: 9px;
-    background: var(--hud-tooltip-bg);
-    border: 1px solid var(--hud-border);
-    color: var(--hud-tooltip-text);
-    font-size: 0.76rem;
-    font-weight: 600;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(-6px);
-    pointer-events: none;
-    box-shadow: 0 8px 20px var(--hud-shadow);
-    transition:
-        opacity 0.18s ease,
-        transform 0.18s ease;
+  position: absolute;
+  left: calc(100% + 18px);
+  padding: 5px 10px;
+  border-radius: 9px;
+  background: var(--hud-tooltip-bg);
+  border: 1px solid var(--hud-border);
+  color: var(--hud-tooltip-text);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+  box-shadow: 0 8px 20px var(--hud-shadow);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .is-desktop:not(.is-expanded) .glassy-item:hover .glassy-label {
-    opacity: 1;
-    transform: translateX(0);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Etiquetas en PC desplegado */
 .is-desktop.is-expanded .glassy-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    white-space: nowrap;
-    flex: 1;
-    text-align: left;
-    animation: glassyFadeIn 0.22s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex: 1;
+  text-align: left;
+  animation: glassyFadeIn 0.22s ease;
 }
 
 /* Punto de color de acento en el botón activo al desplegar */
 .glassy-accent-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--item-accent);
-    box-shadow: 0 0 10px var(--item-accent);
-    flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--item-accent);
+  box-shadow: 0 0 10px var(--item-accent);
+  flex-shrink: 0;
 }
 
 @keyframes glassyFadeIn {
-    from {
-        opacity: 0;
-        transform: translateX(-4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

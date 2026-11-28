@@ -1,11 +1,12 @@
 import {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    type PointerEvent as ReactPointerEvent,
-} from "react";
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import type { HudProps } from "../../hudRegistry";
 import { getOrderedNavItems } from "../../navItems";
@@ -340,6 +341,7 @@ export default function MeniscusHud({ items }: HudProps) {
                                 ]
                                     .filter(Boolean)
                                     .join(" ")}
+                                style={{ '--item-accent': item.accent } as CSSProperties}
                                 onClick={() => handleItemClick(idx, item.to)}
                                 aria-current={isActive ? "page" : undefined}
                                 aria-label={item.label}

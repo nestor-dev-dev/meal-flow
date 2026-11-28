@@ -237,20 +237,20 @@
   transform: scale(1.06);
 }
 
-/* Botón especial '+' con glow azul sutil en reposo */
+/* Botón especial '+' con glow dinámico en reposo */
 .spotlight-item.is-primary:not(.is-active) .spotlight-icon-wrap {
-  color: #60a5fa;
-  background: rgba(59, 130, 246, 0.14);
-  box-shadow: 0 0 14px rgba(59, 130, 246, 0.42);
+  color: var(--item-accent);
+  background: color-mix(in srgb, var(--item-accent) 14%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--item-accent) 42%, transparent);
 }
 
 .spotlight-item.is-primary:not(.is-active):hover .spotlight-icon-wrap {
-  color: #93c5fd;
-  background: rgba(59, 130, 246, 0.24);
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.68);
+  color: var(--item-accent);
+  background: color-mix(in srgb, var(--item-accent) 24%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--item-accent) 68%, transparent);
 }
 
-/* En móvil, fiel al vídeo: barra ultra limpia solo de iconos */
+/* En móvil, barra ultra limpia solo de iconos */
 .is-mobile .spotlight-label {
   display: none;
 }
