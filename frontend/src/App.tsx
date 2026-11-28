@@ -7,8 +7,13 @@ import Crear from './pages/Crear';
 import Compra from './pages/Compra';
 import Cuenta from './pages/Cuenta';
 import Ajustes from './pages/Ajustes';
+import { useEffect } from 'react';
+import { APP_CONFIG } from './config/appConfig';
 
 function App() {
+  useEffect(() => {
+    document.title = APP_CONFIG.name;
+  }, []);
   return (
     <div className="app-container">
       <Navigation />

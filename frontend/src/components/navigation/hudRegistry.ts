@@ -1,8 +1,9 @@
 import type { ComponentType } from 'react';
 import type { NavItemConfig } from './navItems';
 import MeniscusHud from './huds/meniscus/MeniscusHud';
+import GlassyHud from './huds/glassy/GlassyHud';
 
-export type HudId = 'meniscus';
+export type HudId = 'meniscus' | 'glassy';
 
 export interface HudProps {
     items: NavItemConfig[];
@@ -24,10 +25,20 @@ export const HUD_REGISTRY: Record<HudId, HudDefinition> = {
     meniscus: {
         id: 'meniscus',
         name: 'Meniscus',
-        description: 'Dock paramétrico oscuro con muesca líquida y esfera luminosa arrastrable.',
+        description:
+            'Dock paramétrico oscuro con muesca líquida y esfera luminosa arrastrable.',
         navSizeMobile: 124,
         navSizeDesktop: 140,
         Component: MeniscusHud,
+    },
+    glassy: {
+        id: 'glassy',
+        name: 'Glassy',
+        description:
+            'Cápsula flotante de cristal esmerilado con píldora deslizante y barra desplegable en PC.',
+        navSizeMobile: 96,
+        navSizeDesktop: 98,
+        Component: GlassyHud,
     },
 };
 

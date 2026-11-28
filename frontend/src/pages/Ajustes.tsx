@@ -11,6 +11,7 @@ import {
 import { useHud } from '../context/HudContext';
 import { DEFAULT_HUD_ID, HUD_LIST } from '../components/navigation/hudRegistry';
 import './Ajustes.css';
+import { APP_CONFIG } from '../config/appConfig';
 
 export default function Ajustes() {
     const { pathname } = useLocation();
@@ -49,7 +50,9 @@ export default function Ajustes() {
 
                     <div>
                         <h2 className="ajustes-title">Ajustes</h2>
-                        <p className="ajustes-subtitle">Personaliza tu experiencia en mealFlow</p>
+                        <p className="ajustes-subtitle">
+                            Personaliza tu experiencia en {APP_CONFIG.name}
+                        </p>
                     </div>
                 </header>
 
