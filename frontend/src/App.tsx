@@ -6,6 +6,7 @@ import Feed from './pages/Feed';
 import Crear from './pages/Crear';
 import Compra from './pages/Compra';
 import Cuenta from './pages/Cuenta';
+import Ajustes from './pages/Ajustes';
 
 function App() {
   return (
@@ -14,14 +15,14 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          {/* Redirigir la ruta raíz al menú por defecto */}
           <Route path="/" element={<Navigate to="/menu" replace />} />
-          
+
           <Route path="/menu" element={<Menu />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/crear" element={<Crear />} />
           <Route path="/compra" element={<Compra />} />
           <Route path="/cuenta" element={<Cuenta />} />
+          <Route path="/cuenta/ajustes/*" element={<Ajustes />} />
         </Routes>
       </main>
     </div>

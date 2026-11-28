@@ -1,0 +1,312 @@
+.ajustes-page {
+    width: 100%;
+    min-height: 100%;
+}
+
+.ajustes-view-enter {
+    animation: ajustesViewIn 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ajustes-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 26px;
+}
+
+.ajustes-title {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+.ajustes-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.ajustes-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ajustes-back-btn:hover {
+    color: var(--text-main);
+    border-color: var(--border-strong);
+    background-color: var(--bg-elevated);
+}
+
+.ajustes-back-btn:active {
+    transform: scale(0.95);
+}
+
+.settings-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 640px;
+}
+
+.settings-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.18s ease,
+        box-shadow 0.2s ease;
+}
+
+.settings-menu-item:hover {
+    border-color: var(--border-strong);
+    background-color: var(--bg-elevated);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--hud-shadow);
+}
+
+.settings-menu-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    flex-shrink: 0;
+}
+
+.settings-menu-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-menu-title {
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.settings-menu-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.settings-menu-chevron {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.settings-menu-item:hover .settings-menu-chevron {
+    transform: translateX(3px);
+    color: var(--text-main);
+}
+
+.appearance-content {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    max-width: 640px;
+}
+
+.settings-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.settings-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.settings-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.settings-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+}
+
+.theme-segmented {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 14px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+}
+
+.theme-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.theme-option:hover {
+    color: var(--text-main);
+}
+
+.theme-option.is-selected {
+    background-color: var(--bg-elevated);
+    color: var(--text-main);
+    border-color: var(--border-strong);
+    box-shadow: 0 2px 10px var(--hud-shadow);
+}
+
+.hud-selector-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hud-card {
+    width: 100%;
+    text-align: left;
+    padding: 16px;
+    border-radius: 16px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.18s ease,
+        box-shadow 0.2s ease;
+}
+
+.hud-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+}
+
+.hud-card.is-selected {
+    background-color: var(--bg-elevated);
+    border-color: var(--text-main);
+    box-shadow: 0 6px 20px var(--hud-shadow);
+}
+
+.hud-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.hud-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hud-card-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.hud-card-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+}
+
+.hud-card-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hud-card-check.is-selected {
+    background-color: var(--text-main);
+    border-color: var(--text-main);
+    color: var(--bg-card);
+}
+
+.hud-card-desc {
+    margin: 0;
+    font-size: 0.83rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+}
+
+@keyframes ajustesViewIn {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
