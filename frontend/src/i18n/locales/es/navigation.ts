@@ -21,5 +21,13 @@ export const navigation: NavigationTranslations = {
       description:
         'Cápsula flotante de cristal esmerilado con píldora deslizante y barra desplegable en PC.',
     },
+    rail: {
+      description:
+        'Barra compacta de estilo dashboard con indicador lateral de acento y recuadro deslizante.',
+    },
+    spotlight: {
+      description:
+        'Cápsula minimalista con haz de luz ambiental y barra luminosa deslizante sobre el icono activo.',
+    },
   },
 };

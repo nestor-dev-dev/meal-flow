@@ -21,5 +21,13 @@ export const navigation: NavigationTranslations = {
       description:
         'Floating frosted-glass capsule with a sliding pill and expandable desktop rail.',
     },
+    rail: {
+      description:
+        'Compact dashboard-style rail with a sliding active tile and accent edge bar.',
+    },
+    spotlight: {
+      description:
+        'Minimal capsule with a soft ambient spotlight beam and glowing edge bar on the active tab.',
+    },
   },
 };

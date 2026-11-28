@@ -1,0 +1,280 @@
+/* ==========================================================================
+   SPOTLIGHT HUD (Barra superior de Navigation Tabs V2 — Oscuro / Claro)
+   ========================================================================== */
+
+.spotlight-shell {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.spotlight-shell.is-mobile {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.spotlight-shell.is-desktop {
+  top: 14px;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+}
+
+.spotlight-dock {
+  --spot-bg: #17181d;
+  --spot-border: rgba(255, 255, 255, 0.08);
+  --spot-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --spot-icon-idle: rgba(243, 244, 246, 0.42);
+  --spot-icon-hover: rgba(243, 244, 246, 0.85);
+
+  position: relative;
+  pointer-events: auto;
+  display: flex;
+  background-color: var(--spot-bg);
+  border: 1px solid var(--spot-border);
+  box-shadow:
+    var(--spot-inner-highlight),
+    0 14px 32px var(--hud-shadow);
+  overflow: visible;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+[data-theme='light'] .spotlight-dock {
+  --spot-bg: #ffffff;
+  --spot-border: rgba(15, 23, 42, 0.1);
+  --spot-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --spot-icon-idle: rgba(15, 23, 42, 0.42);
+  --spot-icon-hover: rgba(15, 23, 42, 0.85);
+}
+
+.is-mobile .spotlight-dock {
+  width: 100%;
+  max-width: 460px;
+  height: 66px;
+  border-radius: 22px;
+  flex-direction: row;
+  overflow: hidden; /* Recorta el cono de luz limpio dentro de la cápsula */
+}
+
+.is-desktop .spotlight-dock {
+  width: 68px;
+  height: 100%;
+  border-radius: 22px;
+  flex-direction: column;
+  padding: 16px 0;
+}
+
+.spotlight-items {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
+
+.is-mobile .spotlight-items {
+  flex-direction: row;
+  align-items: stretch;
+  padding: 0 8px;
+}
+
+.is-desktop .spotlight-items {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+/* Slot deslizante del foco de luz */
+.spotlight-beam-slot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform, width, height;
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1.12, 0.36, 1),
+    width 0.25s ease,
+    height 0.25s ease;
+}
+
+/* Barra luminosa fina en el borde */
+.spotlight-edge-bar {
+  position: absolute;
+  border-radius: 999px;
+  background-color: var(--active-accent);
+  box-shadow:
+    0 0 10px var(--active-accent),
+    0 0 22px var(--active-accent);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.is-mobile .spotlight-edge-bar {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 3px;
+}
+
+.is-desktop .spotlight-edge-bar {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 28px;
+}
+
+/* Cono / haz de luz ambiental suave sobre el botón activo */
+.spotlight-glow-cone {
+  position: absolute;
+  inset: 0;
+  opacity: 0.95;
+  transition: background 0.25s ease;
+}
+
+.is-mobile .spotlight-glow-cone {
+  background: radial-gradient(
+    ellipse 75% 85% at 50% 0%,
+    color-mix(in srgb, var(--active-accent) 34%, transparent) 0%,
+    color-mix(in srgb, var(--active-accent) 10%, transparent) 55%,
+    transparent 85%
+  );
+}
+
+.is-desktop .spotlight-glow-cone {
+  background: radial-gradient(
+    ellipse 85% 75% at 0% 50%,
+    color-mix(in srgb, var(--active-accent) 34%, transparent) 0%,
+    color-mix(in srgb, var(--active-accent) 10%, transparent) 55%,
+    transparent 85%
+  );
+}
+
+[data-theme='light'] .is-mobile .spotlight-glow-cone {
+  background: radial-gradient(
+    ellipse 75% 85% at 50% 0%,
+    color-mix(in srgb, var(--active-accent) 24%, transparent) 0%,
+    color-mix(in srgb, var(--active-accent) 6%, transparent) 55%,
+    transparent 85%
+  );
+}
+
+[data-theme='light'] .is-desktop .spotlight-glow-cone {
+  background: radial-gradient(
+    ellipse 85% 75% at 0% 50%,
+    color-mix(in srgb, var(--active-accent) 24%, transparent) 0%,
+    color-mix(in srgb, var(--active-accent) 6%, transparent) 55%,
+    transparent 85%
+  );
+}
+
+/* Botones */
+.spotlight-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--spot-icon-idle);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.22s ease;
+}
+
+.is-mobile .spotlight-item {
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.is-desktop .spotlight-item {
+  width: 100%;
+  height: 52px;
+}
+
+.is-desktop .spotlight-item.is-bottom {
+  margin-top: auto;
+}
+
+.spotlight-item:not(.is-active):hover {
+  color: var(--spot-icon-hover);
+}
+
+/* Icono activo iluminado con el color de acento */
+.spotlight-item.is-active {
+  color: var(--item-accent);
+  filter: drop-shadow(
+    0 0 8px color-mix(in srgb, var(--item-accent) 60%, transparent)
+  );
+}
+
+/* En tema claro, oscurecemos ligeramente el drop-shadow para que el lima se lea nítido */
+[data-theme='light'] .spotlight-item.is-active {
+  filter: drop-shadow(
+    0 1px 4px color-mix(in srgb, var(--item-accent) 45%, rgba(0, 0, 0, 0.25))
+  );
+}
+
+.spotlight-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+}
+
+.spotlight-item.is-active .spotlight-icon-wrap {
+  transform: scale(1.06);
+}
+
+/* Botón especial '+' con glow azul sutil en reposo */
+.spotlight-item.is-primary:not(.is-active) .spotlight-icon-wrap {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.14);
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.42);
+}
+
+.spotlight-item.is-primary:not(.is-active):hover .spotlight-icon-wrap {
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.24);
+  box-shadow: 0 0 18px rgba(59, 130, 246, 0.68);
+}
+
+/* En móvil, fiel al vídeo: barra ultra limpia solo de iconos */
+.is-mobile .spotlight-label {
+  display: none;
+}
+
+/* Tooltip en PC a la derecha */
+.is-desktop .spotlight-label {
+  position: absolute;
+  left: calc(100% + 16px);
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--hud-tooltip-bg);
+  border: 1px solid var(--hud-border);
+  color: var(--hud-tooltip-text);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+  box-shadow: 0 8px 20px var(--hud-shadow);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.is-desktop .spotlight-item:hover .spotlight-label {
+  opacity: 1;
+  transform: translateX(0);
+}
