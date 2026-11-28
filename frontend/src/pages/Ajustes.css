@@ -1,6 +1,8 @@
 .ajustes-page {
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100%;
 }
 
 .ajustes-view-enter {
@@ -61,7 +63,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-width: 640px;
 }
 
 .settings-menu-item {
@@ -136,7 +137,6 @@
     display: flex;
     flex-direction: column;
     gap: 26px;
-    max-width: 640px;
 }
 
 .settings-block {
