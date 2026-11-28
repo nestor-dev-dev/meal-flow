@@ -14,7 +14,7 @@ import { buildMeniscusPath, hexToRgb, sampleAccentColor } from "./meniscusMath";
 import "./MeniscusHud.css";
 import { useI18n } from '../../../../i18n/I18nContext';
 
-const DESKTOP_QUERY = "(min-width: 768px)";
+const DESKTOP_QUERY = "(min-width: 768px) and (min-height: 500px)";
 const CORNER_RADIUS = 20;
 const ORB_RADIUS = 26; // Diámetro del círculo = 52px
 const NOTCH_GAP = 5; // Hueco uniforme entre círculo y borde del dock

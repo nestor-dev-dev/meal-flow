@@ -13,7 +13,7 @@ import { getOrderedNavItems } from '../../navItems';
 import { useI18n } from '../../../../i18n/I18nContext';
 import './SpotlightHud.css';
 
-const DESKTOP_QUERY = '(min-width: 768px)';
+const DESKTOP_QUERY = '(min-width: 768px) and (min-height: 500px)';
 
 interface BeamRect {
   x: number;

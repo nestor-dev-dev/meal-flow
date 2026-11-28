@@ -16,6 +16,7 @@
     right: 12px;
     bottom: 12px;
     display: flex;
+    justify-content: center;
 }
 
 /* PC: caja flotante a la izquierda de arriba a abajo con margen limpio */
@@ -42,6 +43,7 @@
 
 .is-mobile .meniscus-dock {
     width: 100%;
+    max-width: 460px;
     height: 74px;
 }
 

@@ -12,7 +12,7 @@
   padding-bottom: calc(var(--nav-size-mobile, var(--nav-size)) + 20px);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (min-height: 500px) {
   .app-container {
     flex-direction: row;
   }

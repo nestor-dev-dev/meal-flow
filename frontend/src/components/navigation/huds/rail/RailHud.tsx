@@ -15,7 +15,7 @@ import { APP_CONFIG } from '../../../../config/appConfig';
 import { useI18n } from '../../../../i18n/I18nContext';
 import './RailHud.css';
 
-const DESKTOP_QUERY = '(min-width: 768px)';
+const DESKTOP_QUERY = '(min-width: 768px) and (min-height: 500px)';
 
 interface IndicatorRect {
   x: number;
