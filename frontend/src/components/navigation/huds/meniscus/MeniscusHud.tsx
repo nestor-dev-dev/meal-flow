@@ -11,6 +11,7 @@ import type { HudProps } from "../../hudRegistry";
 import { getOrderedNavItems } from "../../navItems";
 import { buildMeniscusPath, hexToRgb, sampleAccentColor } from "./meniscusMath";
 import "./MeniscusHud.css";
+import { useI18n } from '../../../../i18n/I18nContext';
 
 const DESKTOP_QUERY = "(min-width: 768px)";
 const CORNER_RADIUS = 20;
@@ -23,6 +24,7 @@ const FILLET_RADIUS = 10; // Curva limpia de entrada/salida
 export default function MeniscusHud({ items }: HudProps) {
     const location = useLocation();
     const navigate = useNavigate();
+    const { t } = useI18n();
 
     const [isDesktop, setIsDesktop] = useState<boolean>(() =>
         typeof window !== "undefined"
@@ -297,7 +299,7 @@ export default function MeniscusHud({ items }: HudProps) {
     return (
         <nav
             className={`meniscus-shell ${isDesktop ? "is-desktop" : "is-mobile"}`}
-            aria-label="Navegación principal"
+            aria-label={t.navigation.ariaMain}
         >
             <div
                 ref={dockRef}
