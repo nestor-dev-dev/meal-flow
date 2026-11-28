@@ -1,8 +1,12 @@
+import { useI18n } from '../i18n/I18nContext';
+
 export default function Menu() {
-    return (
-        <div>
-            <h2>Botón de Menú</h2>
-            <p>Aquí irá el menú semanal generado por el algoritmo.</p>
-        </div>
-    );
+  const { t } = useI18n();
+
+  return (
+    <div>
+      <h2>{t.pages.menu.title}</h2>
+      <p>{t.pages.menu.subtitle}</p>
+    </div>
+  );
 }
